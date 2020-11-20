@@ -44,7 +44,7 @@ public class Drawer {
   }
 
   public static Graph draw(int x1, int y1, int x2, int y2) {
-    Graph tmp = toolFactory.genGraph(x1, y1, x2, y2);
+    Graph tmp = toolFactory.genGraph(x1, y1, x2, y2, pen.getColor());
     tmp.draw(pen);
     return tmp;
   }

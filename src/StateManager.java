@@ -20,20 +20,16 @@ public class StateManager {
     setTool("Line");
   }
 
+  public static Color getColorBackup() {
+    return colorBackup;
+  }
+
   public static void setPenColor(Color c) {
     colorBackup = c;
     Drawer.setPenColor(c);
   }
 
   public static void setTool(String toolName) {
-    switch (toolName) {
-      case "Line":
-        Drawer.setPenColor(colorBackup);
-        break;
-      case "Eraser":
-        Drawer.setPenColor(Color.WHITE);
-        break;
-    }
     Drawer.setTool(toolName);
   }
 

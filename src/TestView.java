@@ -6,20 +6,12 @@ import java.awt.*;
  */
 public class TestView {
   public static void main(String[] args) {
-    JFrame window = new JFrame("Test Window") {
-      /**
-       * 用于防止改变窗口大小时绘制的内容消失
-       */
-      @Override
-      public void paint(Graphics g) {
-        super.paint(g);
-        StateManager.repaintHistory(g);
-      }
-    };
+    JFrame window = new JFrame("Test Window");
 
     JPanel drawingBoard = new JPanel() {
       /**
        * 画板实例必须重写的方法，方便撤销及拖动绘图
+       * 同时解决改变窗口大小时的自动重绘导致的图像消失
        */
       @Override
       public void paint(Graphics g) {
