@@ -8,7 +8,9 @@ public class TestKeyListener implements KeyListener {
 
   @Override
   public void keyTyped(KeyEvent e) {
+    // System.out.println(e.getKeyChar());
     switch (e.getKeyChar()) {
+      case ' ': StateManager.repaintDrawingBoard(); break;
       case 'q': StateManager.setPenColor(Color.BLACK); break;
       case 'w': StateManager.setPenColor(Color.BLUE); break;
       case 'e': StateManager.setPenColor(Color.RED); break;
