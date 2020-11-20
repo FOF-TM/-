@@ -1,7 +1,5 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * 用于测试后端的临时窗口
@@ -9,17 +7,26 @@ import java.awt.Graphics;
 public class TestView {
   public static void main(String[] args) {
     JFrame window = new JFrame("Test Window") {
-      private static final long serialVersionUID = 1L;
       /**
        * 用于防止改变窗口大小时绘制的内容消失
        */
       @Override
       public void paint(Graphics g) {
-        Drawer.repaint();
+        super.paint(g);
+        StateManager.repaintHistory(g);
       }
     };
 
-    JPanel drawingBoard = new JPanel();
+    JPanel drawingBoard = new JPanel() {
+      /**
+       * 画板实例必须重写的方法，方便撤销及拖动绘图
+       */
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        StateManager.repaintHistory(g);
+      }
+    };
     window.add(drawingBoard);
     window.setSize(640, 360);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,8 +40,8 @@ public class TestView {
     /**
      * 由于测试窗口中没有按钮，因此使用键盘来分发功能进行测试
      * 按键功能如下：
-     *  空格 清空画板内容（假）
      *  qwer 用于切换颜色
+     *  ` 撤销
      *  1 铅笔
      *  2 橡皮
      */

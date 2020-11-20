@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
-
+import java.awt.*;
 import javax.swing.JComponent;
 
 /**
@@ -22,10 +20,6 @@ public class StateManager {
     setTool("Line");
   }
 
-  public static void repaintDrawingBoard() {
-    drawingBoard.repaint();
-  }
-
   public static void setPenColor(Color c) {
     colorBackup = c;
     Drawer.setPenColor(c);
@@ -41,5 +35,15 @@ public class StateManager {
         break;
     }
     Drawer.setTool(toolName);
+  }
+
+  public static void repaintDrawingBoard() {
+    drawingBoard.repaint();
+  }
+
+  public static void repaintHistory(Graphics g) {
+    for (Graph graph: Drawer.getHistory()) {
+      graph.draw((Graphics2D) g);
+    }
   }
 }

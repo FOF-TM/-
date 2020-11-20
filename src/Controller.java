@@ -19,13 +19,15 @@ public class Controller extends MouseInputAdapter {
   public void mousePressed(MouseEvent e) {
     x1 = e.getX(); y1 = e.getY();
     x2 = e.getX(); y2 = e.getY();
-    Drawer.draw(x1, y1, x2, y2);
+    Graph g = Drawer.draw(x1, y1, x2, y2);
+    Drawer.addToUndoPoint(g);
+    Drawer.addToHistory(g);
   }
 
   @Override
   public void mouseDragged(MouseEvent e) {
     x2 = e.getX(); y2 = e.getY();
-    Drawer.draw(x1, y1, x2, y2);
+    Drawer.addToHistory(Drawer.draw(x1, y1, x2, y2));
     x1 = x2; y1 = y2;
   }
 

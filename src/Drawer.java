@@ -12,6 +12,7 @@ public class Drawer {
   private static Graphics2D pen = null;
   private static GraphFactory toolFactory = null;
   private static final Deque<Graph> history = new LinkedList<>();
+  private static final Deque<Graph> undoPoints = new LinkedList<>();
   private static final HashMap<String, GraphFactory> toolMap = new HashMap<>();
 
   /**
@@ -34,17 +35,33 @@ public class Drawer {
     toolFactory = toolMap.get(toolName);
   }
 
-  public static void draw(int x1, int y1, int x2, int y2) {
-    if (toolFactory == null) return;
-    Graph tmp = toolFactory.genGraph(x1, y1, x2, y2);
-    history.add(tmp);
-    tmp.draw(pen);
+  public static void addToUndoPoint(Graph g) {
+    undoPoints.add(g);
   }
 
-  public static void repaint() {
-    for (Graph graph: history) {
-      graph.draw(pen);
+  public static void addToHistory(Graph g) {
+    history.add(g);
+  }
+
+  public static Graph draw(int x1, int y1, int x2, int y2) {
+    Graph tmp = toolFactory.genGraph(x1, y1, x2, y2);
+    tmp.draw(pen);
+    return tmp;
+  }
+
+  public static void undo() {
+    Graph head, tail;
+    if ((head = undoPoints.pollLast()) == null) return;
+
+    while ((tail = history.peekLast()) != null) {
+      history.pollLast();
+      if (head == tail) break;
     }
+    StateManager.repaintDrawingBoard();
+  }
+
+  public static Deque<Graph> getHistory() {
+    return history;
   }
 
 }
