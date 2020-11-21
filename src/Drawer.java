@@ -21,6 +21,7 @@ public class Drawer {
   static {
     toolMap.put("Line", LineFactory.getInstance());
     toolMap.put("Eraser", EraserFactory.getInstance());
+    toolMap.put("Rectangle", RectangleFactory.getInstance());
   }
 
   public static void setPen(Graphics2D g) {
@@ -45,11 +46,12 @@ public class Drawer {
 
   public static Graph draw(int x1, int y1, int x2, int y2) {
     Graph tmp = toolFactory.genGraph(x1, y1, x2, y2, pen.getColor());
+    history.add(tmp);
     tmp.draw(pen);
     return tmp;
   }
 
-  public static void undo() {
+  public static void undo(boolean saveHead) {
     Graph head, tail;
     if ((head = undoPoints.pollLast()) == null) return;
 
@@ -58,6 +60,9 @@ public class Drawer {
       if (head == tail) break;
     }
     StateManager.repaintDrawingBoard();
+    if (saveHead) {
+      history.add(head); undoPoints.add(head);
+    }
   }
 
   public static Deque<Graph> getHistory() {

@@ -10,13 +10,14 @@ public class TestKeyListener implements KeyListener {
   public void keyTyped(KeyEvent e) {
     System.out.println("按键（"+e.getKeyChar()+"） 被按下");
     switch (e.getKeyChar()) {
-      case '`': Drawer.undo(); break;
+      case '`': Drawer.undo(false); break;
       case 'q': StateManager.setPenColor(Color.BLACK); break;
       case 'w': StateManager.setPenColor(Color.BLUE); break;
       case 'e': StateManager.setPenColor(Color.RED); break;
       case 'r': StateManager.setPenColor(Color.GREEN); break;
       case '1': StateManager.setTool("Line"); break;
       case '2': StateManager.setTool("Eraser"); break;
+      case '3': StateManager.setTool("Rectangle"); break;
     }
   }
 
