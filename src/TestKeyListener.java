@@ -18,6 +18,8 @@ public class TestKeyListener implements KeyListener {
       case '1': StateManager.setTool("Pen"); break;
       case '2': StateManager.setTool("Eraser"); break;
       case '3': StateManager.setTool("Rectangle"); break;
+      case '4': StateManager.setTool("Oval"); break;
+      case '5': StateManager.setTool("Line"); break;
     }
   }
 

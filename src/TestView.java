@@ -36,6 +36,9 @@ public class TestView {
      *  ` 撤销
      *  1 铅笔
      *  2 橡皮
+     *  3 矩形
+     *  4 圆形
+     *  5 直线
      */
     window.addKeyListener(new TestKeyListener());
   }

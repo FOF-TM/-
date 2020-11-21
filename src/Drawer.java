@@ -22,6 +22,8 @@ public class Drawer {
     toolMap.put("Pen", PenFactory.getInstance());
     toolMap.put("Eraser", EraserFactory.getInstance());
     toolMap.put("Rectangle", RectangleFactory.getInstance());
+    toolMap.put("Oval", OvalFactory.getInstance());
+    toolMap.put("Line", LineFactory.getInstance());
   }
 
   public static void setPen(Graphics2D g) {
