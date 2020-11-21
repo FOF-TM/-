@@ -1,5 +1,6 @@
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.BasicStroke;
 
 /**
  * 绘制的所有图形的顶层抽象类
@@ -8,13 +9,15 @@ public abstract class Graph {
 
   protected int x1, y1, x2, y2;
   protected Color color;
+  protected float width;
 
-  public Graph(int x1, int y1, int x2, int y2, Color c) {
+  public Graph(int x1, int y1, int x2, int y2, Color c, float width) {
+    color = c;
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
-    color = c;
+    this.width = width;
   }
 
   /**
@@ -31,9 +34,11 @@ public abstract class Graph {
   }
 
   public void draw(Graphics2D pen) {
+    pen.setStroke(new BasicStroke(width));
     pen.setColor(color);
     innerDraw(pen);
     pen.setColor(StateManager.getColorBackup());
+    pen.setStroke(new BasicStroke(StateManager.getPenWidth()));
   }
 
   public abstract void innerDraw(Graphics2D pen);

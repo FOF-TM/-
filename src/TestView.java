@@ -39,6 +39,8 @@ public class TestView {
      *  3 矩形
      *  4 圆形
      *  5 直线
+     *  [ 笔刷宽度减一
+     *  ] 笔刷宽度加一
      */
     window.addKeyListener(new TestKeyListener());
   }
