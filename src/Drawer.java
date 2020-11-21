@@ -19,7 +19,7 @@ public class Drawer {
    * 建立字符串与 GraphFactory 的映射
    */
   static {
-    toolMap.put("Line", LineFactory.getInstance());
+    toolMap.put("Pen", PenFactory.getInstance());
     toolMap.put("Eraser", EraserFactory.getInstance());
     toolMap.put("Rectangle", RectangleFactory.getInstance());
   }
@@ -44,8 +44,10 @@ public class Drawer {
     history.add(g);
   }
 
-  public static Graph draw(int x1, int y1, int x2, int y2) {
-    Graph tmp = toolFactory.genGraph(x1, y1, x2, y2, pen.getColor());
+  public static Graph draw(int x1, int y1, int x2, int y2, boolean isDragged) {
+    Graph tmp = 
+      toolFactory.genGraph(x1, y1, x2, y2, pen.getColor(), isDragged);
+
     history.add(tmp);
     tmp.draw(pen);
     return tmp;

@@ -10,8 +10,8 @@ public class RectangleFactory implements GraphFactory {
   }
 
   @Override
-  public Graph genGraph(int x1, int y1, int x2, int y2, Color color) {
-    Drawer.undo(true);
+  public Graph genGraph(int x1, int y1, int x2, int y2, Color color, boolean isDragged) {
+    if (isDragged) Drawer.undo(true);
     return new Rectangle(x1, y1, x2, y2, color);
   }
   

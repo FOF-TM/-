@@ -15,7 +15,7 @@ public class TestKeyListener implements KeyListener {
       case 'w': StateManager.setPenColor(Color.BLUE); break;
       case 'e': StateManager.setPenColor(Color.RED); break;
       case 'r': StateManager.setPenColor(Color.GREEN); break;
-      case '1': StateManager.setTool("Line"); break;
+      case '1': StateManager.setTool("Pen"); break;
       case '2': StateManager.setTool("Eraser"); break;
       case '3': StateManager.setTool("Rectangle"); break;
     }
