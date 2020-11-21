@@ -24,6 +24,7 @@ public class Drawer {
     toolMap.put("Rectangle", RectangleFactory.getInstance());
     toolMap.put("Oval", OvalFactory.getInstance());
     toolMap.put("Line", LineFactory.getInstance());
+    toolMap.put("Text", TextFactory.getInstance());
   }
 
   public static void setPen(Graphics2D g) {
@@ -46,9 +47,9 @@ public class Drawer {
     history.add(g);
   }
 
-  public static Graph draw(int x1, int y1, int x2, int y2, boolean isDragged) {
+  public static Graph draw(int x1, int y1, int x2, int y2, MouseState s) {
     Graph tmp = 
-      toolFactory.genGraph(x1, y1, x2, y2, pen.getColor(), isDragged);
+      toolFactory.genGraph(x1, y1, x2, y2, pen.getColor(), s);
 
     history.add(tmp);
     tmp.draw(pen);

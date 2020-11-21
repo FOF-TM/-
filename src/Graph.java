@@ -38,7 +38,7 @@ public abstract class Graph {
     pen.setColor(color);
     innerDraw(pen);
     pen.setColor(StateManager.getColorBackup());
-    pen.setStroke(new BasicStroke(StateManager.getPenWidth()));
+    pen.setStroke(StateManager.getStroke());
   }
 
   public abstract void innerDraw(Graphics2D pen);

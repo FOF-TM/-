@@ -20,6 +20,7 @@ public class TestKeyListener implements KeyListener {
       case '3': StateManager.setTool("Rectangle"); break;
       case '4': StateManager.setTool("Oval"); break;
       case '5': StateManager.setTool("Line"); break;
+      case '6': StateManager.setTool("Text"); break;
       case '[': StateManager.setPenWidth(Math.max(StateManager.getPenWidth() - 1, 0)); break;
       case ']': StateManager.setPenWidth(Math.min(StateManager.getPenWidth() + 1, 10)); break;
     }
