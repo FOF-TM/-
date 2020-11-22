@@ -1,5 +1,8 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
+
+import sun.awt.image.BufferedImageDevice;
+
 import java.io.File;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -170,7 +173,7 @@ public class TestView {
       String file = sDialog.getFile();
 
       try {
-          ImageIO.write((Image)drawingBoard.getGraphics(),"JPEG",new File(dir,file));
+          ImageIO.write((BufferedImageDevice)drawingBoard.getGraphics(),"JPEG",new File(dir,file));
       } catch (IOException e1) {
           e1.printStackTrace();
       }
