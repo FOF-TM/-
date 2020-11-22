@@ -186,6 +186,12 @@ public class TestView {
      *  ` 撤销
      *  1 铅笔
      *  2 橡皮
+     *  3 矩形
+     *  4 圆形
+     *  5 直线
+     *  6 文字
+     *  [ 笔刷宽度减一
+     *  ] 笔刷宽度加一
      */
     window.addKeyListener(new TestKeyListener());
   }

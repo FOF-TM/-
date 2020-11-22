@@ -23,17 +23,18 @@ public class Controller extends MouseInputAdapter {
   public void mousePressed(MouseEvent e) {
     x1 = e.getX(); y1 = e.getY();
     x2 = e.getX(); y2 = e.getY();
-    Drawer.addToUndoPoint(Drawer.draw(x1, y1, x2, y2));
+    Drawer.addToUndoPoint(Drawer.draw(x1, y1, x2, y2, MouseState.Pressed));
   }
 
   @Override
   public void mouseDragged(MouseEvent e) {
     x2 = e.getX(); y2 = e.getY();
-    Drawer.draw(x1, y1, x2, y2);
+    Drawer.draw(x1, y1, x2, y2, MouseState.Dragged);
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    Drawer.draw(x1, y1, x2, y2);
+    Drawer.draw(x1, y1, x2, y2, MouseState.Released);
+    updateX1Y1withX2Y2();
   }
 }
