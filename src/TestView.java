@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.io.File;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener; 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,17 +38,16 @@ public class TestView {
     JPanel tool = new JPanel();
     JPanel shape = new JPanel();
     JPanel color = new JPanel();
-    JScrollBar scroller = new JScrollBar(); // 滑动条，设置工具的大小
-    scroller.setOrientation(JScrollBar.HORIZONTAL);
-    scroller.setValue(0);
-    scroller.setVisibleAmount(20);
-		// minmum值设为10
-		scroller.setMinimum(10);
-		// maximan值设为60,因为minmum值设为10，可滚动的区域大小为60-20-10=30
-		// 个刻度，滚动范围在10~40中。
-		scroller.setMaximum(60);
-		// 当鼠标在滚动轴列上按一下时，滚动轴一次所跳的区块大小为5个刻度
-		scroller.setBlockIncrement(5);
+    JScrollBar scroller = new JScrollBar(JScrollBar.HORIZONTAL,0,10,0,20); // 滑动条，设置工具的大小
+    scroller.setUnitIncrement(5);
+    scroller.setBlockIncrement(10);
+    scroller.addAdjustmentListener(new AdjustmentListener() {
+      @Override
+      public void adjustmentValueChanged(AdjustmentEvent e) {
+        StateManager.setPenWidth(e.getValue());
+        System.out.println(e.getValue());
+      }
+    }); 
 
     Action pen = new AbstractAction("", new ImageIcon("./image/pen.png")) {
       @Override
@@ -157,15 +158,22 @@ public class TestView {
     shape.add(new JButton(shape1));
     shape.add(new JButton(shape2));
     shape.add(new JButton(shape3));
-
     JButton btn1 = new JButton(color1);
     JButton btn2 = new JButton(color2);
     JButton btn3 = new JButton(color3);
     JButton btn4 = new JButton(color4);
     btn1.setBackground(Color.BLACK);
+    btn1.setOpaque(true); //foreground设置透明
+    btn1.setBorderPainted(false); //最后显示红色
     btn2.setBackground(Color.RED);
+    btn2.setOpaque(true); //foreground设置透明
+    btn2.setBorderPainted(false); //最后显示红色
     btn3.setBackground(Color.ORANGE);
+    btn3.setOpaque(true); //foreground设置透明
+    btn3.setBorderPainted(false); //最后显示红色
     btn4.setBackground(Color.YELLOW);
+    btn4.setOpaque(true); //foreground设置透明
+    btn4.setBorderPainted(false); //最后显示红色
     color.add(btn1);
     color.add(btn2);
     color.add(btn3);
@@ -181,8 +189,14 @@ public class TestView {
       }
     });
     btn1.setBackground(Color.GREEN);
+    btn1.setOpaque(true); //foreground设置透明
+    btn1.setBorderPainted(false); //最后显示红色
     btn2.setBackground(Color.BLUE);
+    btn2.setOpaque(true); //foreground设置透明
+    btn2.setBorderPainted(false); //最后显示红色
     btn3.setBackground(Color.PINK);
+    btn3.setOpaque(true); //foreground设置透明
+    btn3.setBorderPainted(false); //最后显示红色
     color.add(btn1);
     color.add(btn2);
     color.add(btn3);
