@@ -1,8 +1,5 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
-
-import sun.awt.image.BufferedImageDevice;
-
 import java.io.File;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -54,46 +51,85 @@ public class TestView {
     Action pen = new AbstractAction("", new ImageIcon("./image/pen.png")) {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Pen");
       }
     };
     Action word = new AbstractAction("", new ImageIcon("./image/word.png")) {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Text");
       }
     };
     Action eraser = new AbstractAction("", new ImageIcon("./image/eraser.png")) {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Eraser");
       }
     };
-    Action shape1 = new AbstractAction("矩形") {
+    Action previous = new AbstractAction("撤销") {
       @Override
       public void actionPerformed(ActionEvent e) {
+        Drawer.undo(false);
+      }
+    };
+    Action shape1 = new AbstractAction("直线") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Line");
       }
     };
     Action shape2 = new AbstractAction("圆形") {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Oval");
       }
     };
-    Action shape3 = new AbstractAction("三角形") {
+    Action shape3 = new AbstractAction("矩形") {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setTool("Rectangle");
       }
     };
-    Action color1 = new AbstractAction("颜色") {
+    Action color1 = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.BLACK);
       }
     };
-    Action color2 = new AbstractAction("颜色") {
+    Action color2 = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.RED);
       }
     };
-    Action color3 = new AbstractAction("颜色") {
+    Action color3 = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.ORANGE);
+      }
+    };
+    Action color4 = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.YELLOW);
+      }
+    };
+    Action color5 = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.GREEN);
+      }
+    };
+    Action color6 = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.BLUE);
+      }
+    };
+    Action color7 = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StateManager.setPenColor(Color.PINK);
       }
     };
     
@@ -106,34 +142,37 @@ public class TestView {
     JButton penBtn = new JButton(pen);
     JButton wordBtn = new JButton(word);
     JButton eraserBtn = new JButton(eraser);
-    tool.setLayout(new GridLayout(1,3,2,2)); //设置工具栏
-    shape.setLayout(new GridLayout(3, 4, 2, 2)); // 设置形状栏
+    JButton preBtn = new JButton(previous);
+    tool.setLayout(new GridLayout(1,4,2,2)); //设置工具栏
+    shape.setLayout(new GridLayout(1, 3, 2, 2)); // 设置形状栏
     color.setLayout(new GridLayout(2, 4, 0, 0)); // 设置颜色栏
     tool.add(penBtn);
     tool.add(wordBtn);
     tool.add(eraserBtn);
+    tool.add(preBtn);
     JPanel toolAndScroller = new JPanel(); 
-    toolAndScroller.setLayout(new GridLayout(3, 1, 10, 10));
+    toolAndScroller.setLayout(new GridLayout(2, 1, 10, 10));
     toolAndScroller.add(tool);
     toolAndScroller.add(scroller);
-    for(int i = 0; i < 12; i++) {
-      shape.add(new JButton("shape" +(i+1) + ""));
-    }
-    JButton btn1 = new JButton();
-    JButton btn2 = new JButton();
-    JButton btn3 = new JButton();
-    JButton btn4 = new JButton();
+    shape.add(new JButton(shape1));
+    shape.add(new JButton(shape2));
+    shape.add(new JButton(shape3));
+
+    JButton btn1 = new JButton(color1);
+    JButton btn2 = new JButton(color2);
+    JButton btn3 = new JButton(color3);
+    JButton btn4 = new JButton(color4);
     btn1.setBackground(Color.BLACK);
-    btn2.setBackground(Color.GRAY);
-    btn3.setBackground(Color.RED);
-    btn4.setBackground(Color.lightGray);
+    btn2.setBackground(Color.RED);
+    btn3.setBackground(Color.ORANGE);
+    btn4.setBackground(Color.YELLOW);
     color.add(btn1);
     color.add(btn2);
     color.add(btn3);
     color.add(btn4);
-    btn1 = new JButton();
-    btn2 = new JButton();
-    btn3 = new JButton();
+    btn1 = new JButton(color5);
+    btn2 = new JButton(color6);
+    btn3 = new JButton(color7);
     btn4 = new JButton(new AbstractAction("颜色选择"){
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -141,9 +180,9 @@ public class TestView {
         StateManager.setPenColor(result);
       }
     });
-    btn1.setBackground(Color.BLUE);
-    btn2.setBackground(Color.YELLOW);
-    btn3.setBackground(Color.GREEN);
+    btn1.setBackground(Color.GREEN);
+    btn2.setBackground(Color.BLUE);
+    btn3.setBackground(Color.PINK);
     color.add(btn1);
     color.add(btn2);
     color.add(btn3);
@@ -162,9 +201,6 @@ public class TestView {
     window.pack();
     window.setVisible(true);
     BufferedImage image = new BufferedImage(drawingBoard.getWidth(), drawingBoard.getHeight(), BufferedImage.TYPE_INT_BGR);
-    Graphics graph = image.getGraphics();
-    graph = drawingBoard.getGraphics();
-    graph.drawImage(image, 0, 0, null);
     saveItem.addActionListener(e -> {
       //弹出对话框，另存为
       FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
@@ -173,7 +209,7 @@ public class TestView {
       String file = sDialog.getFile();
 
       try {
-          ImageIO.write((BufferedImageDevice)drawingBoard.getGraphics(),"JPEG",new File(dir,file));
+          ImageIO.write(image,"JPEG",new File(dir,file));
       } catch (IOException e1) {
           e1.printStackTrace();
       }
@@ -181,7 +217,7 @@ public class TestView {
     // 画板的背景需要设置为白色，否则橡皮看起来很怪
     drawingBoard.setBackground(Color.WHITE);
     // 用画板实例来注册状态管理器
-    StateManager.init(drawingBoard, graph);
+    StateManager.init(drawingBoard);
     /**
      * 由于测试窗口中没有按钮，因此使用键盘来分发功能进行测试
      * 按键功能如下：
