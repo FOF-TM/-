@@ -14,7 +14,7 @@ public class StateManager {
 
   private static String fontName;
   private static int fontSize;
-  private static Font font = new Font("微软雅黑", Font.PLAIN, 5);
+  private static Font font = new Font("微软雅黑", Font.PLAIN, 20);
 
   private static String text = "Ghy - Lym";
 
@@ -137,5 +137,13 @@ public class StateManager {
     for (Graph graph: Drawer.getHistory()) {
       graph.draw((Graphics2D) g);
     }
+  }
+
+  /**
+   * 清空 Drawer 的 history 和 undoPoints，方便新建画板
+   */
+  public static void reset() {
+    Drawer.getHistory().clear();
+    Drawer.getUndoPoints().clear();
   }
 }
