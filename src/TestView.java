@@ -266,6 +266,7 @@ public class TestView {
      *  [ 笔刷宽度减一
      *  ] 笔刷宽度加一
      */
-    window.addKeyListener(new TestKeyListener());
+    drawingBoard.addKeyListener(new TestKeyListener());
+    drawingBoard.requestFocus();
   }
 }

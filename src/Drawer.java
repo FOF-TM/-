@@ -74,4 +74,8 @@ public class Drawer {
     return history;
   }
 
+  public static Deque<Graph> getUndoPoints() {
+    return undoPoints;
+  }
+
 }

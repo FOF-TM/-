@@ -23,6 +23,7 @@ public class TestKeyListener implements KeyListener {
       case '6': StateManager.setTool("Text"); break;
       case '[': StateManager.setPenWidth(Math.max(StateManager.getPenWidth() - 1, 0)); break;
       case ']': StateManager.setPenWidth(Math.min(StateManager.getPenWidth() + 1, 10)); break;
+      case '\\': StateManager.setFontName(""); StateManager.setFontSize(50); break;
     }
   }
 
