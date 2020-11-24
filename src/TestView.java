@@ -45,7 +45,7 @@ public class TestView {
       @Override
       public void adjustmentValueChanged(AdjustmentEvent e) {
         StateManager.setPenWidth(e.getValue());
-        System.out.println(e.getValue());
+        // System.out.println(e.getValue());
       }
     }); 
 
@@ -214,20 +214,40 @@ public class TestView {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    BufferedImage image = new BufferedImage(drawingBoard.getWidth(), drawingBoard.getHeight(), BufferedImage.TYPE_INT_BGR);
+    BufferedImage image = new BufferedImage(drawingBoard.getWidth(),drawingBoard.getHeight(),BufferedImage.TYPE_INT_RGB);
     saveItem.addActionListener(e -> {
       //弹出对话框，另存为
       FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
       sDialog.setVisible(true);
       String dir = sDialog.getDirectory();
       String file = sDialog.getFile();
-
+      Graphics2D im = image.createGraphics();
+      im.setColor(Color.WHITE);
+      im.fillRect(0, 0, drawingBoard.getWidth(), drawingBoard.getHeight());
+      im.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON);
+      drawingBoard.paint(im);
       try {
           ImageIO.write(image,"JPEG",new File(dir,file));
       } catch (IOException e1) {
           e1.printStackTrace();
       }
   });
+  openItem.addActionListener(e -> {
+    //弹出对话框，选择本地图片
+    FileDialog oDialog = new FileDialog(window);
+    oDialog.setVisible(true);
+    //读取用户选择的图片
+    String dir = oDialog.getDirectory();
+    String file = oDialog.getFile();
+    try {
+        BufferedImage img = ImageIO.read(new File(dir,file));
+        drawingBoard.getGraphics().drawImage(img, 0, 0, drawingBoard.getWidth(), drawingBoard.getHeight(), null);
+    } catch (IOException e1) {
+        e1.printStackTrace();
+    }
+
+});
     // 画板的背景需要设置为白色，否则橡皮看起来很怪
     drawingBoard.setBackground(Color.WHITE);
     // 用画板实例来注册状态管理器
