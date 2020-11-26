@@ -16,6 +16,8 @@ public class StateManager {
   private static int fontSize;
   private static Font font = new Font("微软雅黑", Font.PLAIN, 20);
 
+  private static Image background = null;
+
   private static String text = "Ghy - Lym";
 
   /**
@@ -123,6 +125,10 @@ public class StateManager {
     Drawer.setTool(toolName);
   }
 
+  public static void setBackground(Image img) {
+    background = img;
+  }
+
   /**
    * 强制调用画板的 repaint 方法
    */
@@ -134,6 +140,7 @@ public class StateManager {
    * 在画板上重新绘制所有的图形，配合画板的 repaint 使用
    */
   public static void repaintHistory(Graphics g) {
+    g.drawImage(background, 0, 0, drawingBoard.getWidth(), drawingBoard.getHeight(), null);
     for (Graph graph: Drawer.getHistory()) {
       graph.draw((Graphics2D) g);
     }

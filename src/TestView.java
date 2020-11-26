@@ -1,8 +1,10 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.io.File;
+import java.awt.event.WindowAdapter;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener; 
+import java.awt.event.AdjustmentListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,7 +29,6 @@ public class TestView {
       }
     };
     Container p = window.getContentPane();
-    BoxLayout boxLayout = new BoxLayout(p, BoxLayout.Y_AXIS);
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("文件");
     JMenuItem newItem = new JMenuItem("新建");
@@ -38,6 +39,7 @@ public class TestView {
     JPanel tool = new JPanel();
     JPanel shape = new JPanel();
     JPanel color = new JPanel();
+    JPanel text = new JPanel();
     JScrollBar scroller = new JScrollBar(JScrollBar.HORIZONTAL,0,10,0,20); // 滑动条，设置工具的大小
     scroller.setUnitIncrement(5);
     scroller.setBlockIncrement(10);
@@ -155,6 +157,18 @@ public class TestView {
     toolAndScroller.setLayout(new GridLayout(2, 1, 10, 10));
     toolAndScroller.add(tool);
     toolAndScroller.add(scroller);
+    JPanel setText = new JPanel();
+    JTextField textContent = new JTextField(20);
+    String[] font = {"宋体", "楷体", "黑体", "微软雅黑"};
+    String[] size = {"8" ,"9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
+    JComboBox<String> fontChoice = new JComboBox<String>(font);
+    JComboBox<String> setTextSize = new JComboBox<String>(size);
+    setText.add(fontChoice);
+    setText.add(setTextSize);
+    setText.setLayout(new GridLayout(1, 2, 4, 0));
+    text.setLayout(new GridLayout(2, 1, 2, 2));
+    text.add(textContent);
+    text.add(setText);
     shape.add(new JButton(shape1));
     shape.add(new JButton(shape2));
     shape.add(new JButton(shape3));
@@ -205,16 +219,42 @@ public class TestView {
     // JButton colorButton = new JButton(color);
     function.add(toolAndScroller);
     function.addSeparator();
+    function.add(text);
+    function.addSeparator();
     function.add(shape);
     function.addSeparator();
     function.add(color);
     window.add(function, BorderLayout.NORTH);
     drawingBoard.setPreferredSize(new DimensionUIResource(600, 500));
     window.add(drawingBoard);
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
     BufferedImage image = new BufferedImage(drawingBoard.getWidth(),drawingBoard.getHeight(),BufferedImage.TYPE_INT_RGB);
+    window.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        int result = JOptionPane.showConfirmDialog(window, "是否保存当前画面", "新建",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (result == JOptionPane.YES_OPTION){
+          FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
+          sDialog.setVisible(true);
+          String dir = sDialog.getDirectory();
+          String file = sDialog.getFile();
+          Graphics2D im = image.createGraphics();
+          im.setColor(Color.WHITE);
+          im.fillRect(0, 0, drawingBoard.getWidth(), drawingBoard.getHeight());
+          im.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+              RenderingHints.VALUE_ANTIALIAS_ON);
+          drawingBoard.paint(im);
+          try {
+              ImageIO.write(image,"JPEG",new File(dir,file));
+          } catch (IOException e1) {
+              e1.printStackTrace();
+          }
+        }
+        else {}
+        System.exit(0);
+      }
+    });
     saveItem.addActionListener(e -> {
       //弹出对话框，另存为
       FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
@@ -233,6 +273,31 @@ public class TestView {
           e1.printStackTrace();
       }
   });
+  newItem.addActionListener(e -> {
+    int result = JOptionPane.showConfirmDialog(window, "是否保存当前画面", "新建",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (result == JOptionPane.YES_OPTION){
+      FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
+      sDialog.setVisible(true);
+      String dir = sDialog.getDirectory();
+      String file = sDialog.getFile();
+      Graphics2D im = image.createGraphics();
+      im.setColor(Color.WHITE);
+      im.fillRect(0, 0, drawingBoard.getWidth(), drawingBoard.getHeight());
+      im.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON);
+      drawingBoard.paint(im);
+      try {
+          ImageIO.write(image,"JPEG",new File(dir,file));
+      } catch (IOException e1) {
+          e1.printStackTrace();
+      }
+      StateManager.reset();
+    }
+    else {
+      StateManager.reset();
+    }
+    StateManager.repaintDrawingBoard();
+  });
   openItem.addActionListener(e -> {
     //弹出对话框，选择本地图片
     FileDialog oDialog = new FileDialog(window);
@@ -242,12 +307,44 @@ public class TestView {
     String file = oDialog.getFile();
     try {
         BufferedImage img = ImageIO.read(new File(dir,file));
+        StateManager.setBackground(img);
+        StateManager.reset();
         drawingBoard.getGraphics().drawImage(img, 0, 0, drawingBoard.getWidth(), drawingBoard.getHeight(), null);
     } catch (IOException e1) {
         e1.printStackTrace();
     }
-
-});
+  });
+  exitItem.addActionListener(e -> {
+    int result = JOptionPane.showConfirmDialog(window, "是否保存当前画面", "退出",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (result == JOptionPane.YES_OPTION){
+      FileDialog sDialog = new FileDialog(window,"保存图片",FileDialog.SAVE);
+      sDialog.setVisible(true);
+      String dir = sDialog.getDirectory();
+      String file = sDialog.getFile();
+      Graphics2D im = image.createGraphics();
+      im.setColor(Color.WHITE);
+      im.fillRect(0, 0, drawingBoard.getWidth(), drawingBoard.getHeight());
+      im.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON);
+      drawingBoard.paint(im);
+      try {
+          ImageIO.write(image,"JPEG",new File(dir,file));
+      } catch (IOException e1) {
+          e1.printStackTrace();
+      }
+    }
+    else {}
+    System.exit(0);
+  });
+  textContent.addActionListener(e -> {
+    StateManager.setText(textContent.getText());
+  });
+  fontChoice.addActionListener(e -> {
+    StateManager.setFontName(fontChoice.getSelectedItem().toString());
+  });
+  setTextSize.addActionListener(e -> {
+    StateManager.setFontSize(Integer.parseInt(setTextSize.getSelectedItem().toString()));
+  });
     // 画板的背景需要设置为白色，否则橡皮看起来很怪
     drawingBoard.setBackground(Color.WHITE);
     // 用画板实例来注册状态管理器
