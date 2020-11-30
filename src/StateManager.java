@@ -6,18 +6,24 @@ import javax.swing.JComponent;
  */
 public class StateManager {
 
+  // 用于备份最后一次选择的颜色
   private static Color colorBackup;
+  // 用于记录画板的实例，方便 repaint
   private static JComponent drawingBoard;
 
-  private static float width;
+  // 用于记录当前的线条粗细，stroke 则由此来获得相应的对象
+  private static float width = 1;
   private static BasicStroke stroke = new BasicStroke(1);
 
+  // 用于记录当前的文字属性，font 则由此来获得相应的对象
   private static String fontName;
   private static int fontSize;
   private static Font font = new Font("微软雅黑", Font.PLAIN, 20);
 
+  // 用于记录当前画板区域中的背景图，方便 repaint
   private static Image background = null;
 
+  // 用于记录当前用户输入的文字内容，方便在画板上绘制文字
   private static String text = "Ghy - Lym";
 
   /**

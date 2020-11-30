@@ -6,14 +6,17 @@ import javax.swing.event.MouseInputAdapter;
  */
 public class Controller extends MouseInputAdapter {
   
+  // 用于实现单例模式
   private Controller() {};
   private static Controller instance = new Controller();
 
-  private int x1, x2, y1, y2;
-
+  // 用于实现单例模式
   public static Controller getInstance() {
     return instance;
   }
+
+  // 用于记录上一次绘制的点，方便拖动绘图的实现
+  private int x1, x2, y1, y2;
 
   public void updateX1Y1withX2Y2() {
     x1 = x2; y1 = y2;
